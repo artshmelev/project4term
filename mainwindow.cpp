@@ -20,8 +20,10 @@ MainWindow::MainWindow(QWidget *parent) :
         return;
 
     QTextStream in(&file);
-    for (int i = 0; i < 5 && !in.atEnd(); ++i) {
-        double p, q;
+    int num;
+    in >> num;
+    for (int i = 0; i < num && !in.atEnd(); ++i) {
+        int p, q;
         in >> p >> q;
         points.push_back(new Point(p, q));
         //qDebug() << p;
@@ -57,6 +59,10 @@ void MainWindow::changeEvent(QEvent *e) {
 
 void MainWindow::paintEvent(QPaintEvent *e) {
     QPainter painter(this);
+    painter.setPen(QPen(Qt::red, 5));
+    for (int i = 0; i < points.size(); ++i) {
+        painter.drawPoint(points[i]->getX(), points[i]->getY());
+    }
     painter.setPen(QPen(Qt::black, 1));
     if (isTriangleEnded)
         for (int i = 0; i < triangles.size(); ++i) {
