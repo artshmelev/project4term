@@ -57,7 +57,7 @@ void MainWindow::changeEvent(QEvent *e) {
 
 void MainWindow::paintEvent(QPaintEvent *e) {
     QPainter painter(this);
-    painter.setPen(QPen(Qt::black, 2));
+    painter.setPen(QPen(Qt::black, 1));
     if (isTriangleEnded)
         for (int i = 0; i < triangles.size(); ++i) {
             //qDebug() << triangles[i].point1.getX();

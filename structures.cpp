@@ -1,20 +1,7 @@
 #include "structures.h"
 
-int Point::getX() const {
-    return x;
-}
+#include <algorithm>
 
-int Point::getY() const {
-    return y;
-}
-
-void Point::setX(int x1) {
-    x = x1;
-}
-
-void Point::setY(int y1) {
-    y = y1;
-}
 /*
 bool Point::operator<(const Point &p1) const {
     return (y < p1.getY() ||
@@ -27,4 +14,12 @@ std::vector<Point*> Triangle::getPoints() {
     pnts.push_back(point2);
     pnts.push_back(point3);
     return pnts;
+}
+
+std::vector<Edge> Triangle::getEdges() {
+    std::vector<Edge> edges;
+    edges.push_back(Edge(point1, point2));
+    edges.push_back(Edge(point2, point3));
+    edges.push_back(Edge(point3, point1));
+    return edges;
 }
