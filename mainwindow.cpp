@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QFile file("data.dat");
+    QFile file("test/data.dat");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 
