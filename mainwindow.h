@@ -2,8 +2,10 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QGraphicsScene>
 
 #include "structures.h"
+#include "triangleaction.h"
 
 namespace Ui {
     class MainWindow;
@@ -17,13 +19,14 @@ public:
 
 protected:
     void changeEvent(QEvent *e);
-    void paintEvent(QPaintEvent *e);
 
 private:
     Ui::MainWindow *ui;
-    std::vector<Point*> points;
-    std::vector<Triangle*> triangles;
-    bool isTriangleEnded;
+    QGraphicsScene *scene;
+    TriangleAction *triangulation;
+
+private slots:
+    void on_pushButton_clicked();
 };
 
 #endif // MAINWINDOW_H

@@ -3,7 +3,12 @@
 #include "triangleaction.h"
 #include "structures.h"
 
-#include <QDebug>
+TriangleAction::~TriangleAction() {
+    for (int i = 0; i < points.size(); ++i)
+        delete points[i];
+    for (int i = 0; i < triangles.size(); ++i)
+        delete triangles[i];
+}
 
 void TriangleAction::run() {
     sort(points.begin(), points.end(), classCmp());
@@ -19,11 +24,6 @@ void TriangleAction::run() {
             triangles.push_back(new Triangle(pnts[1], pnts[2], points[i]));
         current = triangles.back();
         pnts = current->getPoints();
-
-        /*
-        triangles.push_back(new Triangle(points[0], points[1], points[i]));
-        current = triangles.back();
-        */
     }
 }
 
@@ -79,8 +79,4 @@ int TriangleAction::dotProduct(Point *p1, Point *p2, Point *p3) {
 int TriangleAction::getArea(Point *p1, Point *p2, Point *p3) {
     return dotProduct(p2->getX() - p1->getX(), p2->getY() - p1->getY(),
                       p3->getX() - p1->getX(), p3->getY() - p1->getY());
-}
-
-std::vector<Triangle*> TriangleAction::getTriangles() {
-    return triangles;
 }

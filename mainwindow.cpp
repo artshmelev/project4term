@@ -13,7 +13,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    isTriangleEnded = 0;
 
     QFile file("data.dat");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -22,27 +21,23 @@ MainWindow::MainWindow(QWidget *parent) :
     QTextStream in(&file);
     int num;
     in >> num;
+    std::vector<Point*> points;
     for (int i = 0; i < num && !in.atEnd(); ++i) {
         int p, q;
         in >> p >> q;
         points.push_back(new Point(p, q));
-        //qDebug() << p;
     }
     file.close();
 
-    TriangleAction triangulation(points);
-    triangulation.run();
-    triangles = triangulation.getTriangles();
-    //qDebug() << triangles[0].point1.getX();
+    triangulation = new TriangleAction(points);
+    scene = new QGraphicsScene;
 
-    isTriangleEnded = 1;
+    ui->graphicsView->setScene(scene);
 }
 
 MainWindow::~MainWindow() {
-    for (int i = 0; i < points.size(); ++i)
-        delete points[i];
-    for (int i = 0; i < triangles.size(); ++i)
-        delete triangles[i];
+    delete scene;
+    delete triangulation;
     delete ui;
 }
 
@@ -57,28 +52,26 @@ void MainWindow::changeEvent(QEvent *e) {
     }
 }
 
-void MainWindow::paintEvent(QPaintEvent *e) {
-    QPainter painter(this);
-    painter.setPen(QPen(Qt::red, 5));
-    for (int i = 0; i < points.size(); ++i) {
-        painter.drawPoint(points[i]->getX(), points[i]->getY());
+void MainWindow::on_pushButton_clicked()
+{
+    triangulation->run();
+    std::vector<Triangle*> triangles = triangulation->getTriangles();
+    std::vector<Point*> points = triangulation->getPoints();
+
+    QPen pointsPen(Qt::red, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    QBrush pointsBrush(Qt::red, Qt::SolidPattern);
+    for (int i = 0; i < points.size(); ++i)
+        scene->addEllipse(points[i]->getX() - 2, points[i]->getY() - 2,
+                          4, 4, pointsPen, pointsBrush);
+
+    QPen edgesPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    for (int i = 0; i < triangles.size(); ++i) {
+        std::vector<Point*> pnts = triangles[i]->getPoints();
+        scene->addLine(pnts[0]->getX(), pnts[0]->getY(),
+                       pnts[1]->getX(), pnts[1]->getY(), edgesPen);
+        scene->addLine(pnts[1]->getX(), pnts[1]->getY(),
+                       pnts[2]->getX(), pnts[2]->getY(), edgesPen);
+        scene->addLine(pnts[0]->getX(), pnts[0]->getY(),
+                       pnts[2]->getX(), pnts[2]->getY(), edgesPen);
     }
-    painter.setPen(QPen(Qt::black, 1));
-    if (isTriangleEnded)
-        for (int i = 0; i < triangles.size(); ++i) {
-            //qDebug() << triangles[i].point1.getX();
-            std::vector<Point*> pnts = triangles[i]->getPoints();
-            painter.drawLine(pnts[0]->getX(),
-                             pnts[0]->getY(),
-                             pnts[1]->getX(),
-                             pnts[1]->getY());
-            painter.drawLine(pnts[1]->getX(),
-                             pnts[1]->getY(),
-                             pnts[2]->getX(),
-                             pnts[2]->getY());
-            painter.drawLine(pnts[0]->getX(),
-                             pnts[0]->getY(),
-                             pnts[2]->getX(),
-                             pnts[2]->getY());
-        }
 }
