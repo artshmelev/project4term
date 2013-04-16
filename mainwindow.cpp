@@ -6,7 +6,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "structures.h"
-#include "triangleaction.h"
+#include "mainaction.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -24,12 +24,13 @@ MainWindow::MainWindow(QWidget *parent) :
     std::vector<Point*> points;
     for (int i = 0; i < num && !in.atEnd(); ++i) {
         int p, q;
-        in >> p >> q;
-        points.push_back(new Point(p, q));
+        float t;
+        in >> p >> q >> t;
+        points.push_back(new Point(p, q, t));
     }
     file.close();
 
-    triangulation = new TriangleAction(points);
+    mainAction = new MainAction(points);
     scene = new QGraphicsScene;
 
     ui->graphicsView->setScene(scene);
@@ -37,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow() {
     delete scene;
-    delete triangulation;
+    delete mainAction;
     delete ui;
 }
 
@@ -54,9 +55,9 @@ void MainWindow::changeEvent(QEvent *e) {
 
 void MainWindow::on_pushButton_clicked()
 {
-    triangulation->run();
-    std::vector<Triangle*> triangles = triangulation->getTriangles();
-    std::vector<Point*> points = triangulation->getPoints();
+    mainAction->run();
+    std::vector<Triangle*> triangles = mainAction->getTriangles();
+    std::vector<Point*> points = mainAction->getPoints();
 
     QPen pointsPen(Qt::red, 3, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
     QBrush pointsBrush(Qt::red, Qt::SolidPattern);

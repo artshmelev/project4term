@@ -5,7 +5,7 @@
 #include <QGraphicsScene>
 
 #include "structures.h"
-#include "triangleaction.h"
+#include "mainaction.h"
 
 namespace Ui {
     class MainWindow;
@@ -23,7 +23,7 @@ protected:
 private:
     Ui::MainWindow *ui;
     QGraphicsScene *scene;
-    TriangleAction *triangulation;
+    MainAction *mainAction;
 
 private slots:
     void on_pushButton_clicked();

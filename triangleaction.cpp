@@ -3,14 +3,8 @@
 #include "triangleaction.h"
 #include "structures.h"
 
-TriangleAction::~TriangleAction() {
-    for (int i = 0; i < points.size(); ++i)
-        delete points[i];
-    for (int i = 0; i < triangles.size(); ++i)
-        delete triangles[i];
-}
-
-void TriangleAction::run() {
+void TriangleAction::run(std::vector<Point*> &points,
+                         std::vector<Triangle*> &triangles) {
     sort(points.begin(), points.end(), classCmp());
     Triangle *current = new Triangle(points[0], points[1], points[2]);
     triangles.push_back(current);

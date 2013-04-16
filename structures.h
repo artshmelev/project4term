@@ -7,17 +7,20 @@ class Triangle;
 
 class Point {
 public:
-    Point() : x(0), y(0) {}
-    Point(int x1, int y1) : x(x1), y(y1) {}
+    Point() : x(0), y(0), t(0) {}
+    Point(int x1, int y1, float t1) : x(x1), y(y1), t(t1) {}
     int getX() const;
     int getY() const;
+    float getT() const;
     void setX(int x1);
     void setY(int y1);
+    void setT(float t1);
 
     //bool operator<(const Point &p1) const;
 
 private:
     int x, y;
+    float t;
 };
 
 class Edge {
@@ -29,7 +32,7 @@ public:
 
 private:
     Point *point1, *point2;
-    //Triangle *triangle1, *triangle2;
+    Triangle *triangle1, *triangle2;
 };
 
 class Triangle {
@@ -60,12 +63,20 @@ inline int Point::getY() const {
     return y;
 }
 
+inline float Point::getT() const {
+    return t;
+}
+
 inline void Point::setX(int x1) {
     x = x1;
 }
 
 inline void Point::setY(int y1) {
     y = y1;
+}
+
+inline void Point::setT(float t1) {
+    t = t1;
 }
 
 inline Point* Edge::getPoint1() const {
