@@ -81,10 +81,21 @@ void MainWindow::on_pushButton_clicked()
                        pnts[2]->getX(), pnts[2]->getY(), edgesPen);
     }
 
-    QPen isolinePen(Qt::green, 2, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
+    std::vector<QColor> colors{QColor(138, 43, 226), QColor(0, 0, 255),
+                               QColor(60, 179, 113), QColor(0, 255, 0),
+                               QColor(255, 215, 0)};
     for (int i = 0; i < isolineEdges.size(); ++i) {
         Point *point1 = isolineEdges[i]->getPoint1(),
               *point2 = isolineEdges[i]->getPoint2();
+        int numberColor = 0, temp = point1->getT();
+        if (temp < 15)
+            numberColor = 1;
+        else if (temp == 15)
+            numberColor = 3;
+        else
+            numberColor = 4;
+        QPen isolinePen(colors[numberColor], 2, Qt::SolidLine, Qt::RoundCap,
+                        Qt::RoundJoin);
         scene->addLine(point1->getX(), point1->getY(),
                        point2->getX(), point2->getY(), isolinePen);
     }

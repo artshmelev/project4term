@@ -1,6 +1,3 @@
-# -------------------------------------------------
-# Project created by QtCreator 2013-02-25T18:46:40
-# -------------------------------------------------
 TARGET = project4term
 TEMPLATE = app
 SOURCES += main.cpp \
@@ -15,3 +12,4 @@ HEADERS += mainwindow.h \
     isolineaction.h \
     mainaction.h
 FORMS += mainwindow.ui
+QMAKE_CXXFLAGS += -std=c++0x

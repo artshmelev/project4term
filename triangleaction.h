@@ -3,7 +3,6 @@
 
 #include "structures.h"
 
-//TODO: singleton class
 class TriangleAction {
 public:
     void run(std::vector<Point*> &points, std::vector<Triangle*> &triangles);

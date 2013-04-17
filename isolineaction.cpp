@@ -1,4 +1,6 @@
 #include <algorithm>
+#include <thread>
+#include <functional>
 #include <QDebug>
 
 #include "isolineaction.h"
@@ -6,7 +8,42 @@
 void IsolineAction::run(std::vector<Point*> &isolinePoints,
                         std::vector<Edge*> &isolineEdges,
                         std::vector<Triangle*> &triangles) {
-    float h = 15;
+    int numThreads = 2;
+    std::thread *threads = new std::thread[numThreads];
+    float isolineValue = 12.0f;
+    for (int i = 0; i < numThreads; ++i) {
+        threads[i] = std::thread(&IsolineAction::runThread, this,
+                                 std::ref(isolinePoints),
+                                 std::ref(isolineEdges),
+                                 std::ref(triangles), isolineValue);
+        isolineValue += 3.0f;
+    }
+
+    runThread(isolinePoints, isolineEdges, triangles, isolineValue);
+
+    for (int i = 0; i < numThreads; ++i)
+        threads[i].join();
+
+    delete [] threads;
+
+}
+
+Point* IsolineAction::edgeDivide(Point *p1, Point *p2, float delim) {
+    float len1 = delim - p1->getT(),
+          len = p2->getT() - p1->getT(),
+          x1 = p1->getX(), y1 = p1->getY(),
+          x2 = p2->getX(), y2 = p2->getY();
+    float xNew = x1 + (x2 - x1) / len * len1,
+          yNew = y1 + (y2 - y1) / len * len1;
+
+    return new Point(xNew, yNew, delim);
+}
+
+void IsolineAction::runThread(std::vector<Point*> &isolinePoints,
+                              std::vector<Edge*> &isolineEdges,
+                              std::vector<Triangle*> &triangles,
+                              float isolineValue) {
+    float h = isolineValue;
     for (int i = 0; i < triangles.size(); ++i) {
         std::vector<Point*> pnts = triangles[i]->getPoints();
         float t1 = pnts[0]->getT(),
@@ -47,20 +84,12 @@ void IsolineAction::run(std::vector<Point*> &isolinePoints,
                 delimPoint1 = edgeDivide(pnts[2], pnts[0], h);
                 delimPoint2 = edgeDivide(pnts[2], pnts[1], h);
             }
+
+            threadMutex.lock();
             isolinePoints.push_back(delimPoint1);
             isolinePoints.push_back(delimPoint2);
             isolineEdges.push_back(new Edge(delimPoint1, delimPoint2));
+            threadMutex.unlock();
         }
     }
-}
-
-Point* IsolineAction::edgeDivide(Point *p1, Point *p2, float delim) {
-    float len1 = delim - p1->getT(),
-          len = p2->getT() - p1->getT(),
-          x1 = p1->getX(), y1 = p1->getY(),
-          x2 = p2->getX(), y2 = p2->getY();
-    float xNew = x1 + (x2 - x1) / len * len1,
-          yNew = y1 + (y2 - y1) / len * len1;
-    qDebug() << xNew << " " << yNew;
-    return new Point(xNew, yNew, delim);
 }
