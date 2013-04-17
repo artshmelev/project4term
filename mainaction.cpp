@@ -15,9 +15,13 @@ MainAction::~MainAction() {
         delete points[i];
     for (int i = 0; i < triangles.size(); ++i)
         delete triangles[i];
+    for (int i = 0; i < isolineEdges.size(); ++i)
+        delete isolineEdges[i];
+    for (int i = 0; i < isolinePoints.size(); ++i)
+        delete isolinePoints[i];
 }
 
 void MainAction::run() {
     triangleAction->run(points, triangles);
-    isolineAction->run(points, triangles);
+    isolineAction->run(isolinePoints, isolineEdges, triangles);
 }
