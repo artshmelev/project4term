@@ -12,11 +12,11 @@ public:
              std::vector<Triangle*> &triangles);
 
 private:
-    Point* edgeDivide(Point *p1, Point *p2, float delim);
     void runThread(std::vector<Point*> &isolinePoints,
                    std::vector<Edge*> &isolineEdges,
                    std::vector<Triangle*> &triangles,
                    float isolineValue);
+    Point* edgeDivide(Point *p1, Point *p2, float delim);
     std::mutex threadMutex;
 };
 

@@ -28,17 +28,6 @@ void IsolineAction::run(std::vector<Point*> &isolinePoints,
 
 }
 
-Point* IsolineAction::edgeDivide(Point *p1, Point *p2, float delim) {
-    float len1 = delim - p1->getT(),
-          len = p2->getT() - p1->getT(),
-          x1 = p1->getX(), y1 = p1->getY(),
-          x2 = p2->getX(), y2 = p2->getY();
-    float xNew = x1 + (x2 - x1) / len * len1,
-          yNew = y1 + (y2 - y1) / len * len1;
-
-    return new Point(xNew, yNew, delim);
-}
-
 void IsolineAction::runThread(std::vector<Point*> &isolinePoints,
                               std::vector<Edge*> &isolineEdges,
                               std::vector<Triangle*> &triangles,
@@ -92,4 +81,15 @@ void IsolineAction::runThread(std::vector<Point*> &isolinePoints,
             threadMutex.unlock();
         }
     }
+}
+
+Point* IsolineAction::edgeDivide(Point *p1, Point *p2, float delim) {
+    float len1 = delim - p1->getT(),
+          len = p2->getT() - p1->getT(),
+          x1 = p1->getX(), y1 = p1->getY(),
+          x2 = p2->getX(), y2 = p2->getY();
+    float xNew = x1 + (x2 - x1) / len * len1,
+          yNew = y1 + (y2 - y1) / len * len1;
+
+    return new Point(xNew, yNew, delim);
 }

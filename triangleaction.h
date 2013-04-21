@@ -8,6 +8,9 @@ public:
     void run(std::vector<Point*> &points, std::vector<Triangle*> &triangles);
 
 private:
+    void runThread(std::vector<Point*> &points,
+                   std::vector<Triangle*> &triangles);
+
     bool isBuildPossible(Point *p1, Point *p2, Point *p3, Triangle *trian);
     bool isCrossed(Point *p1, Point *p2, Triangle *trian);
     bool isInTriangle(Point *p, Triangle *trian);

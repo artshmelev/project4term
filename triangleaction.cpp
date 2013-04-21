@@ -1,10 +1,40 @@
 #include <algorithm>
+#include <thread>
 
 #include "triangleaction.h"
 #include "structures.h"
 
 void TriangleAction::run(std::vector<Point*> &points,
                          std::vector<Triangle*> &triangles) {
+    int numThreads = 1;
+    std::thread *threads = new std::thread[numThreads];
+    std::vector<std::vector<Triangle*> > triansThread(numThreads + 1);
+    std::vector<std::vector<Point*> > pointsThread(numThreads + 1);
+    for (int i = 0; i < points.size(); ++i) {
+        if (points[i]->getX() < 500)
+            pointsThread[0].push_back(points[i]);
+        else
+            pointsThread[1].push_back(points[i]);
+    }
+    for (int i = 0; i < numThreads; ++i)
+        threads[i] = std::thread(&TriangleAction::runThread, this,
+                                 std::ref(pointsThread[i]),
+                                 std::ref(triansThread[i]));
+
+    runThread(pointsThread[1], triansThread[1]);
+
+    for (int i = 0; i < numThreads; ++i)
+        threads[i].join();
+
+    for (int i = 0; i < triansThread.size(); ++i)
+        for (int j = 0; j < triansThread[i].size(); ++j)
+            triangles.push_back(triansThread[i][j]);
+
+    delete [] threads;
+}
+
+void TriangleAction::runThread(std::vector<Point*> &points,
+                               std::vector<Triangle*> &triangles) {
     sort(points.begin(), points.end(), classCmp());
     Triangle *current = new Triangle(points[0], points[1], points[2]);
     triangles.push_back(current);
