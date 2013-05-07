@@ -2,12 +2,6 @@
 
 #include <algorithm>
 
-/*
-bool Point::operator<(const Point &p1) const {
-    return (y < p1.getY() ||
-            y == p1.getY() && x < p1.getX());
-}*/
-
 std::vector<Point*> Triangle::getPoints() {
     std::vector<Point*> pnts;
     pnts.push_back(point1);

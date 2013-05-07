@@ -16,8 +16,6 @@ public:
     void setY(float y1);
     void setT(float t1);
 
-    //bool operator<(const Point &p1) const;
-
 private:
     float x, y, t;
 };
@@ -50,7 +48,7 @@ private:
 struct classCmp {
     bool operator()(Point *p1, Point *p2) {
         return p1->getY() < p2->getY() ||
-                p1->getY() == p2->getY() && p1->getX() < p2->getX();
+               p1->getY() == p2->getY() && p1->getX() < p2->getX();
     }
 };
 

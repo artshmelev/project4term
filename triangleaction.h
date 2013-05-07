@@ -14,10 +14,12 @@ private:
     bool isBuildPossible(Point *p1, Point *p2, Point *p3, Triangle *trian);
     bool isCrossed(Point *p1, Point *p2, Triangle *trian);
     bool isInTriangle(Point *p, Triangle *trian);
+    bool isRightSide(Point *p, std::vector<Triangle*> &triansLine);
+    bool isLeftSide(Point *p, std::vector<Triangle*> &triansLine);
 
-    int dotProduct(int x1, int y1, int x2, int y2);
-    int dotProduct(Point *p1, Point *p2, Point *p3);
-    int getArea(Point *p1, Point *p2, Point *p3);
+    float dotProduct(float x1, float y1, float x2, float y2);
+    float dotProduct(Point *p1, Point *p2, Point *p3);
+    float getArea(Point *p1, Point *p2, Point *p3);
 };
 
 #endif // TRIANGLEACTION_H
