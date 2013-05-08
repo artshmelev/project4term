@@ -10,9 +10,12 @@ public:
 private:
     void runThread(std::vector<Point*> &points,
                    std::vector<Triangle*> &triangles);
+    void doConvex(std::vector<Point*> &points,
+                  std::vector<Triangle*> &triangles);
 
     bool isBuildPossible(Point *p1, Point *p2, Point *p3, Triangle *trian);
     bool isCrossed(Point *p1, Point *p2, Triangle *trian);
+    bool isCrossed(Point *p1, Point *p2, Point *p3, Point *p4);
     bool isInTriangle(Point *p, Triangle *trian);
     bool isRightSide(Point *p, std::vector<Triangle*> &triansLine);
     bool isLeftSide(Point *p, std::vector<Triangle*> &triansLine);
