@@ -22,7 +22,7 @@ void TriangleAction::run(std::vector<Point*> &points,
     int numLines = (int)sqrt(0.13f * (maxX - minX) / (maxY - minY) *
                              points.size()) + 1;
     float lineWidth = (maxX - minX) / numLines + 0.5f;
-    qDebug() << numLines;
+    //qDebug() << numLines;
 
     std::thread *threads = new std::thread[numLines - 1];
     std::vector<std::vector<Triangle*> > triansLine(numLines);

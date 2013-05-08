@@ -8,10 +8,10 @@
 void IsolineAction::run(std::vector<Point*> &isolinePoints,
                         std::vector<Edge*> &isolineEdges,
                         std::vector<Triangle*> &triangles) {
-    int numThreads = 2;
-    std::thread *threads = new std::thread[numThreads];
-    float isolineValue = 12.0f;
-    for (int i = 0; i < numThreads; ++i) {
+    int numThreads = 11;
+    std::thread *threads = new std::thread[numThreads - 1];
+    float isolineValue = 0.0f;
+    for (int i = 0; i < numThreads - 1; ++i) {
         threads[i] = std::thread(&IsolineAction::runThread, this,
                                  std::ref(isolinePoints),
                                  std::ref(isolineEdges),
@@ -21,7 +21,7 @@ void IsolineAction::run(std::vector<Point*> &isolinePoints,
 
     runThread(isolinePoints, isolineEdges, triangles, isolineValue);
 
-    for (int i = 0; i < numThreads; ++i)
+    for (int i = 0; i < numThreads - 1; ++i)
         threads[i].join();
 
     delete [] threads;

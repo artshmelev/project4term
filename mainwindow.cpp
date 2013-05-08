@@ -14,7 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    QFile file("test/data1.dat");
+    QFile file("test/data2.dat");
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return;
 
@@ -87,19 +87,17 @@ void MainWindow::on_pushButton_clicked()
     }
 
     if (ui->radioButton_2->isChecked() || ui->radioButton_3->isChecked()) {
-        std::vector<QColor> colors{QColor(138, 43, 226), QColor(0, 0, 255),
-                                   QColor(60, 179, 113), QColor(0, 255, 0),
-                                   QColor(255, 215, 0)};
+        std::vector<QColor> colors{QColor(139, 137, 137), QColor(138, 43, 226),
+                                   QColor(72, 61, 139), QColor(0, 0, 255),
+                                   QColor(0, 255, 255), QColor(50, 205, 50),
+                                   QColor(0, 255, 0), QColor(173, 255, 47),
+                                   QColor(255, 255, 0), QColor(255, 165, 0),
+                                   QColor(255, 0, 0)};
         for (int i = 0; i < isolineEdges.size(); ++i) {
             Point *point1 = isolineEdges[i]->getPoint1(),
                   *point2 = isolineEdges[i]->getPoint2();
-            int numberColor = 0, temp = point1->getT();
-            if (temp < 15)
-                numberColor = 1;
-            else if (temp == 15)
-                numberColor = 3;
-            else
-                numberColor = 4;
+            int temp = point1->getT();
+            int numberColor = (int)temp / 3;
             QPen isolinePen(colors[numberColor], 2, Qt::SolidLine, Qt::RoundCap,
                             Qt::RoundJoin);
             scene->addLine(point1->getX(), point1->getY(),
